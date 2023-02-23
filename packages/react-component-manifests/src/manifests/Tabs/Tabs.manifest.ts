@@ -1,10 +1,10 @@
-import { CSSTreeOptions } from "@atrilabs/app-design-forest/src/cssTree";
-import { CustomPropsTreeOptions } from "@atrilabs/app-design-forest/src/customPropsTree";
-import { ReactComponentManifestSchema } from "@atrilabs/react-component-manifest-schema";
-import CSSTreeId from "@atrilabs/app-design-forest/src/cssTree?id";
-import CustomTreeId from "@atrilabs/app-design-forest/src/customPropsTree?id";
 import reactSchemaId from "@atrilabs/react-component-manifest-schema?id";
+import type { ReactComponentManifestSchema } from "@atrilabs/react-component-manifest-schema";
 import iconSchemaId from "@atrilabs/component-icon-manifest-schema?id";
+import CSSTreeId from "@atrilabs/app-design-forest/src/cssTree?id";
+import { CSSTreeOptions } from "@atrilabs/app-design-forest";
+import { CustomPropsTreeOptions } from "@atrilabs/app-design-forest";
+import CustomTreeId from "@atrilabs/app-design-forest/src/customPropsTree?id";
 
 const cssTreeOptions: CSSTreeOptions = {
   boxShadowOptions: true,
@@ -22,54 +22,59 @@ const cssTreeOptions: CSSTreeOptions = {
 
 const customTreeOptions: CustomPropsTreeOptions = {
   dataTypes: {
-    items: {
+    color: { type: "color" },
+    current: { type: "number" },
+    steps: {
       type: "array_map",
-      singleObjectName: "item",
+      singleObjectName: "step",
       attributes: [
         { fieldName: "title", type: "text" },
         { fieldName: "description", type: "text" },
-        { fieldName: "open", type: "boolean" },
       ],
     },
-    
   },
 };
 
 const compManifest: ReactComponentManifestSchema = {
-  meta: { key: "Accordion", category: "Basics" },
+  meta: { key: "Tabs", category: "Basics" },
   dev: {
     decorators: [],
     attachProps: {
       styles: {
         treeId: CSSTreeId,
-        initialValue: {},
+        initialValue: {
+          width: "100%",
+        },
         treeOptions: cssTreeOptions,
         canvasOptions: { groupByBreakpoint: true },
       },
       custom: {
         treeId: CustomTreeId,
         initialValue: {
-          items: [],
+          color: "#336699",
+          current: 1,
+          steps: [],
+          title: [],
+          description: [],
         },
         treeOptions: customTreeOptions,
         canvasOptions: { groupByBreakpoint: false },
       },
     },
     attachCallbacks: {
-      onTitleClick: [{ type: "controlled", selector: ["custom", "open"] }],
+      onClick: [{ type: "do_nothing" }],
     },
-    defaultCallbackHandlers: {},
+    defaultCallbackHandlers: {
+      onClick: [{ sendEventData: true }],
+    },
   },
 };
 
 const iconManifest = {
-  panel: { comp: "CommonIcon", props: { name: "Accordion" } },
+  panel: { comp: "CommonIcon", props: { name: "Tabs" } },
   drag: {
     comp: "CommonIcon",
-    props: {
-      name: "Accordion",
-      containerStyle: { padding: "1rem" },
-    },
+    props: { name: "Tabs", containerStyle: { padding: "1rem" } },
   },
   renderSchema: compManifest,
 };
