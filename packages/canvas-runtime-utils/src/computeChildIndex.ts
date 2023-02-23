@@ -106,7 +106,7 @@ export function getComponentIndex(
       coords,
       childCoordinates,
       loc,
-      props,
+      props
     });
     return computeFactoredIndex(index, caughtBy);
   } else {
